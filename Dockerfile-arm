@@ -2,8 +2,8 @@ FROM arm64v8/ubuntu
 
 RUN dpkg --add-architecture arm64
 RUN apt update 
-RUN apt install curl:arm64 -y
-RUN apt install certbot:arm64 -y
+RUN apt install curl -y
+RUN apt install certbot -y
 # RUN mkdir /etc/letsencrypt
 
 CMD ["/entrypoint.sh"]
