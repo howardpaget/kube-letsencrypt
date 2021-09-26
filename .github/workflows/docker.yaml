@@ -20,6 +20,6 @@ jobs:
       - run: docker build -t ghcr.io/howardpaget/dotly-artefacts/kube-letsencrypt:latest .
       - run: docker push ghcr.io/howardpaget/dotly-artefacts/kube-letsencrypt:latest
 
-      - run: docker build -f Dockerfile-arm -t ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest --platform linux/arm/v8 .
+      - run: docker build -f Dockerfile-arm -t ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest --platform linux/arm64/v8 .
       - run: docker push ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest
         

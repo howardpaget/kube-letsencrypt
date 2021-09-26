@@ -11,7 +11,11 @@ NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 cd $HOME
 python3 -m http.server 80 &
 PID=$!
-certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAIN}
+if [[ -z "$DRY_RUN" ]]; then
+	certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAIN} --dry-run
+else
+	certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAIN}
+fi
 kill $PID
 
 CERTPATH=/etc/letsencrypt/live/$(echo $DOMAIN | cut -f1 -d',')
