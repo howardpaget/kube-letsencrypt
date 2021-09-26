@@ -1,6 +1,6 @@
 FROM arm64v8/ubuntu
 
-RUN apt update && apt install certbot -y
+RUN apt update && apt install certbot:arm64 -y
 # RUN mkdir /etc/letsencrypt
 
 CMD ["/entrypoint.sh"]
