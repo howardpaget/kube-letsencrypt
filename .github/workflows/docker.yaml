@@ -3,7 +3,7 @@ name: Build docker image
 on: [push]
 
 jobs:
-  build:
+  buildx:
 
     runs-on: ubuntu-latest
 
@@ -17,9 +17,21 @@ jobs:
           username: howardpaget
           password: ${{ secrets.PUBLISH_TOKEN }}
 
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Inspect builder
+        run: |
+          echo "Name:      ${{ steps.buildx.outputs.name }}"
+          echo "Endpoint:  ${{ steps.buildx.outputs.endpoint }}"
+          echo "Status:    ${{ steps.buildx.outputs.status }}"
+          echo "Flags:     ${{ steps.buildx.outputs.flags }}"
+          echo "Platforms: ${{ steps.buildx.outputs.platforms }}"
+
       - run: docker build -t ghcr.io/howardpaget/dotly-artefacts/kube-letsencrypt:latest .
       - run: docker push ghcr.io/howardpaget/dotly-artefacts/kube-letsencrypt:latest
 
-      - run: docker buildx build -f Dockerfile-arm -t ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest --platform linux/arm64/v8 .
+      - run: docker buildx build -f Dockerfile-arm -t ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest --platform linux/arm64 .
       - run: docker push ghcr.io/howardpaget/dotly-artefacts/arm/kube-letsencrypt:latest
         
