@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [[ -z $EMAIL || -z $DOMAINS || -z $SECRET || -z $DEPLOYMENT ]]; then
-	echo "EMAIL, DOMAINS, SECERT, and DEPLOYMENT env vars required"
+if [[ -z $EMAIL || -z $DOMAIN || -z $SECRET || -z $DEPLOYMENT ]]; then
+	echo "EMAIL, DOMAIN, SECERT, and DEPLOYMENT env vars required"
 	env
 	exit 1
 fi
@@ -9,12 +9,12 @@ fi
 NAMESPACE=$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace)
 
 cd $HOME
-python -m SimpleHTTPServer 80 &
+python3 -m http.server 80 &
 PID=$!
-certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAINS}
+certbot certonly --webroot -w $HOME -n --agree-tos --email ${EMAIL} --no-self-upgrade -d ${DOMAIN}
 kill $PID
 
-CERTPATH=/etc/letsencrypt/live/$(echo $DOMAINS | cut -f1 -d',')
+CERTPATH=/etc/letsencrypt/live/$(echo $DOMAIN | cut -f1 -d',')
 
 ls $CERTPATH || exit 1
 
