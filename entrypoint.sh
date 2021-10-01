@@ -18,7 +18,7 @@ else
 fi
 kill $PID
 
-CERTPATH=/etc/letsencrypt/live/$(echo $DOMAIN | cut -f1 -d',')
+CERTPATH=/etc/letsencrypt/live/$(echo ${DOMAIN#\*\.} | cut -f1 -d',')
 
 ls $CERTPATH || exit 1
 
